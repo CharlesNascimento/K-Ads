@@ -46,7 +46,10 @@ namespace KansusGames.KansusAds.Demo
 
         public void ShowInterstitialAd()
         {
-            adManager.ShowInterstitialAd(interstitialPlacementId);
+            //adManager.ShowInterstitialAd(interstitialPlacementId);
+            // It also works without providing the placementId parameter
+            // In this case, the first ad in the list will be used (From the manager settings)
+            adManager.ShowInterstitialAd();
         }
 
         public void ShowRewardedVideoAd()

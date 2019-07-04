@@ -20,6 +20,17 @@ namespace KansusGames.KansusAds.Manager
         private readonly Dictionary<string, IInterstitialAd> interstitialsMap;
         private readonly Dictionary<string, IRewardedVideoAd> rewardedVideosMap;
 
+        private readonly Dictionary<string, long> lastTimePlayedMap;
+
+        #endregion
+
+        #region Properties
+
+        private long CurrentTimeInSeconds
+        {
+            get => DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
+        }
+
         #endregion
 
         #region Initialization
@@ -37,6 +48,8 @@ namespace KansusGames.KansusAds.Manager
             bannersMap = new Dictionary<string, IBannerAd>();
             interstitialsMap = new Dictionary<string, IInterstitialAd>();
             rewardedVideosMap = new Dictionary<string, IRewardedVideoAd>();
+
+            lastTimePlayedMap = new Dictionary<string, long>();
         }
 
         #endregion
@@ -53,9 +66,9 @@ namespace KansusGames.KansusAds.Manager
 
         public void ShowBannerAd(string placementId, Action onShow = null, Action<string> onFailedToLoad = null)
         {
-            var adSettings = settings.BannerAds
-                .Where(x => x.PlacementId == placementId)
-                .FirstOrDefault();
+            placementId = GetPlacementIdOrDefault(placementId, settings.BannerAds);
+
+            var adSettings = settings.BannerAds.FirstOrDefault(x => x.PlacementId == placementId);
 
             if (adSettings == null)
             {
@@ -78,13 +91,17 @@ namespace KansusGames.KansusAds.Manager
 
         public void HideBannerAd(string placementId)
         {
+            placementId = GetPlacementIdOrDefault(placementId, settings.BannerAds);
+
             var bannerAd = bannersMap[placementId];
 
             bannerAd.Hide();
         }
 
-        public void LoadInterstitialAd(string placementId, Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void LoadInterstitialAd(string placementId = null, Action onLoad = null, Action<string> onFailedToLoad = null)
         {
+            placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
+
             var interstitial = adPlatform.CreateInterstitial(placementId);
 
             interstitial.Load(onLoad, onFailedToLoad);
@@ -92,8 +109,10 @@ namespace KansusGames.KansusAds.Manager
             interstitialsMap[placementId] = interstitial;
         }
 
-        public void ShowInterstitialAd(string placementId, Action onOpening = null, Action onClose = null)
+        public void ShowInterstitialAd(string placementId = null, Action onOpening = null, Action onClose = null)
         {
+            placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
+
             var interstitialAd = interstitialsMap[placementId];
 
             if (interstitialAd == null || !interstitialAd.IsLoaded())
@@ -102,13 +121,17 @@ namespace KansusGames.KansusAds.Manager
                 return;
             }
 
-            Action onCloseCallback = onClose;
+            var onCloseCallback = onClose;
+            var adSettings = settings.InterstitalAds.FirstOrDefault(x => x.PlacementId == placementId);
+            var lastTimePlayed = lastTimePlayedMap.ContainsKey(placementId) ? lastTimePlayedMap[placementId] : 0;
 
-            var adSetting = settings.InterstitalAds
-                .Where(x => x.PlacementId == placementId)
-                .FirstOrDefault();
+            if (CurrentTimeInSeconds - lastTimePlayed < adSettings.TimeCap)
+            {
+                Debug.LogWarning("Interstitial ad will not play due to its time cap");
+                return;
+            }
 
-            if (adSetting.LoadAutomatically)
+            if (adSettings.LoadAutomatically)
             {
                 onCloseCallback = () =>
                 {
@@ -118,10 +141,13 @@ namespace KansusGames.KansusAds.Manager
             };
 
             interstitialAd.Show(onOpening, onCloseCallback);
+            lastTimePlayedMap[placementId] = CurrentTimeInSeconds;
         }
 
         public void LoadRewardedVideoAd(string placementId, Action onLoad = null, Action<string> onFailedToLoad = null)
         {
+            placementId = GetPlacementIdOrDefault(placementId, settings.RewardedVideoAds);
+
             var rewardedVideo = adPlatform.CreateRewardedVideoAd(placementId);
 
             rewardedVideo.Load(onLoad, onFailedToLoad);
@@ -131,6 +157,8 @@ namespace KansusGames.KansusAds.Manager
 
         public void ShowRewardedVideoAd(string placementId, Action onEarnReward = null, Action onSkip = null)
         {
+            placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
+
             var rewardedVideo = rewardedVideosMap[placementId];
 
             if (rewardedVideo == null || !rewardedVideo.IsLoaded())
@@ -142,11 +170,9 @@ namespace KansusGames.KansusAds.Manager
             Action onSkipCallback = onSkip;
             Action onEarnRewardCallback = onEarnReward;
 
-            var adSetting = settings.RewardedVideoAds
-                .Where(x => x.PlacementId == placementId)
-                .FirstOrDefault();
+            var adSettings = settings.RewardedVideoAds.FirstOrDefault(x => x.PlacementId == placementId);
 
-            if (adSetting.LoadAutomatically)
+            if (adSettings.LoadAutomatically)
             {
                 onSkipCallback = () =>
                 {
@@ -188,6 +214,22 @@ namespace KansusGames.KansusAds.Manager
                     LoadRewardedVideoAd(ad.PlacementId);
                 }
             }
+        }
+
+        private string GetPlacementIdOrDefault<TAd>(string placementId, List<TAd> ads) where TAd : Ad
+        {
+            if (placementId == null)
+            {
+                if (ads.Count == 0)
+                {
+                    throw new InvalidOperationException("No placement ID provided, but there is no" +
+                        " first ad in the list, since it is empty");
+                }
+
+                placementId = ads[0].PlacementId;
+            }
+
+            return placementId;
         }
 
         #endregion

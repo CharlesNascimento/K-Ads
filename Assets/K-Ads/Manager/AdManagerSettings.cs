@@ -21,7 +21,7 @@ namespace KansusGames.KansusAds.Manager
         private List<BannerAd> bannerAds;
 
         [SerializeField]
-        private List<Ad> interstitalAds;
+        private List<InterstitialAd> interstitalAds;
 
         [SerializeField]
         private List<Ad> rewardedVideoAds;
@@ -34,7 +34,7 @@ namespace KansusGames.KansusAds.Manager
         public bool TestMode { get => testMode; }
         public List<string> TestDevices { get => testDevices; }
         public List<BannerAd> BannerAds { get => bannerAds; }
-        public List<Ad> InterstitalAds { get => interstitalAds; }
+        public List<InterstitialAd> InterstitalAds { get => interstitalAds; }
         public List<Ad> RewardedVideoAds { get => rewardedVideoAds; }
 
         #endregion

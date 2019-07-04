@@ -23,6 +23,7 @@ MonoBehaviour:
   interstitalAds:
   - placementId: ca-app-pub-8189179944227719/3894509876
     loadAutomatically: 1
+    timeCap: 60
   rewardedVideoAds:
   - placementId: ca-app-pub-8189179944227719/5774761278
     loadAutomatically: 1
