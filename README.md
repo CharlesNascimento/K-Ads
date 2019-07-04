@@ -6,6 +6,7 @@ K-Ads is an Unity asset which delivers an abstraction layer for advertisement ne
 * Extensible: more networks can be easily implemented
 * Configuration via Scriptable Object (App ID, Placement IDs)
 * Automatic ad caching
+* Time capping
 
 ## Supported networks
 * AdMob
