@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d946f491b4772843bf6c72c0f3b5aef, type: 3}
+  m_Name: '[AdMob] Android Ad Manager Settings'
+  m_EditorClassIdentifier: 
+  appId: ca-app-pub-8189179944227719~2345624489
+  testMode: 0
+  testDevices:
+  - 5D755F97C43B6DCAB7BCED6246BD1A5F
+  bannerAds:
+  - placementId: ca-app-pub-8189179944227719/4612641279
+    loadAutomatically: 1
+    adPosition: 1
+  interstitalAds:
+  - placementId: ca-app-pub-8189179944227719/3894509876
+    loadAutomatically: 1
+  rewardedVideoAds:
+  - placementId: ca-app-pub-8189179944227719/5774761278
+    loadAutomatically: 1
