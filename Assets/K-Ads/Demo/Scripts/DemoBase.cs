@@ -28,7 +28,10 @@ namespace KansusGames.KansusAds.Demo
 
             adManager = new AdManager(adPlatform, adManagerSettings);
 
+            Debug.Log("BehavioralTargetingConsentStatus: " + adManager.GetBehavioralTargetingConsentStatus());
+
             adManager.Initialize();
+            adManager.SetBehavioralTargetingEnabled(true);
         }
 
         public void ShowBannerAd()

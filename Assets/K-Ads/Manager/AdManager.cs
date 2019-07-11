@@ -11,6 +11,12 @@ namespace KansusGames.KansusAds.Manager
     /// </summary>
     public class AdManager : IAdManager
     {
+        #region Constants
+
+        private const string ConsentStatusKey = "BehavioralTargetingConsentStatus";
+
+        #endregion
+
         #region Fields
 
         private readonly IAdPlatform adPlatform;
@@ -67,6 +73,19 @@ namespace KansusGames.KansusAds.Manager
         public void SetBehavioralTargetingEnabled(bool enable)
         {
             adPlatform.SetBehavioralTargetingEnabled(enable);
+
+            var status = enable ?
+                (int)BehavioralTargetingConsentStatus.Agreed :
+                (int)BehavioralTargetingConsentStatus.Declined;
+
+            PlayerPrefs.SetInt(ConsentStatusKey, status);
+        }
+
+        public BehavioralTargetingConsentStatus GetBehavioralTargetingConsentStatus()
+        {
+            var status = PlayerPrefs.GetInt(ConsentStatusKey, 0);
+
+            return (BehavioralTargetingConsentStatus)status;
         }
 
         public void ShowBannerAd(string placementId, Action onShow = null, Action<string> onFailedToLoad = null)

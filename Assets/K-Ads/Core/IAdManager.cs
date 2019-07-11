@@ -2,6 +2,7 @@
 
 namespace KansusGames.KansusAds.Core
 {
+
     /// <summary>
     /// Specifies a manager responsible for loading and showing ads.
     /// </summary>
@@ -17,6 +18,12 @@ namespace KansusGames.KansusAds.Core
         /// </summary>
         /// <param name="enable">A boolean indicating whether behavioral targeting should be enabled.</param>
         void SetBehavioralTargetingEnabled(bool enable);
+
+        /// <summary>
+        /// Gets the status of consent of the user for behavioral targeting advertisements. 
+        /// </summary>
+        /// <returns>The consent status.</returns>
+        BehavioralTargetingConsentStatus GetBehavioralTargetingConsentStatus();
 
         /// <summary>
         /// Shows a banner advertisement.
