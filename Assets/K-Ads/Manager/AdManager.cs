@@ -64,6 +64,11 @@ namespace KansusGames.KansusAds.Manager
             InitializeRewardedVideoAds();
         }
 
+        public void SetBehavioralTargetingEnabled(bool enable)
+        {
+            adPlatform.SetBehavioralTargetingEnabled(enable);
+        }
+
         public void ShowBannerAd(string placementId, Action onShow = null, Action<string> onFailedToLoad = null)
         {
             placementId = GetPlacementIdOrDefault(placementId, settings.BannerAds);
@@ -157,7 +162,7 @@ namespace KansusGames.KansusAds.Manager
 
         public void ShowRewardedVideoAd(string placementId, Action onEarnReward = null, Action onSkip = null)
         {
-            placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
+            placementId = GetPlacementIdOrDefault(placementId, settings.RewardedVideoAds);
 
             var rewardedVideo = rewardedVideosMap[placementId];
 

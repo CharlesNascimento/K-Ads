@@ -18,6 +18,13 @@ namespace KansusGames.KansusAds.Core
         void Initialize(string appId, bool testMode, List<string> testDevices = null);
 
         /// <summary>
+        /// Enables or disables behavioral targeting advertisements.
+        /// </summary>
+        /// <param name="enable">A boolean indicating whether behavioral targeting should
+        /// be enabled.</param>
+        void SetBehavioralTargetingEnabled(bool enable);
+
+        /// <summary>
         /// Creates an interstitial ad for this advertising platform.
         /// </summary>
         /// <param name="placementId">The identification of the ad.</param>

@@ -24,6 +24,11 @@ namespace KansusGames.KansusAds.Adapter.AdMob
             adRequestBuilderFactory = new AdRequestBuilderFactory(testDevices);
         }
 
+        public void SetBehavioralTargetingEnabled(bool enable)
+        {
+            adRequestBuilderFactory.ServePersonalizedAds = enable;
+        }
+
         public IBannerAd CreateBanner(string placementId, BannerPosition adPosition)
         {
             return new AdMobBannerAd(placementId, adPosition, adRequestBuilderFactory);
@@ -45,7 +50,9 @@ namespace KansusGames.KansusAds.Adapter.AdMob
 
         public class AdRequestBuilderFactory
         {
-            private List<string> testDevices;
+            private readonly List<string> testDevices;
+
+            public bool ServePersonalizedAds { get; set; } = true;
 
             public AdRequestBuilderFactory(List<string> testDevices)
             {
@@ -55,6 +62,11 @@ namespace KansusGames.KansusAds.Adapter.AdMob
             public AdRequest.Builder CreateBuilder()
             {
                 AdRequest.Builder requestBuilder = new AdRequest.Builder();
+
+                if (!ServePersonalizedAds)
+                {
+                    requestBuilder.AddExtra("npa", "1");
+                }
 
                 testDevices.ForEach(td => requestBuilder.AddTestDevice(td));
 

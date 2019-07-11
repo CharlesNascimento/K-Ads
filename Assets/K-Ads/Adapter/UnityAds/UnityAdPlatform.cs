@@ -1,6 +1,6 @@
 ﻿using KansusGames.KansusAds.Core;
-using System;
 using System.Collections.Generic;
+using UnityEngine.Advertisements;
 
 namespace KansusGames.KansusAds.Adapter.UnityAds
 {
@@ -13,7 +13,14 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
 
         public void Initialize(string appId, bool testMode, List<string> testDevices = null)
         {
-            UnityEngine.Advertisements.Advertisement.Initialize(appId, testMode);
+            Advertisement.Initialize(appId, testMode);
+        }
+
+        public void SetBehavioralTargetingEnabled(bool enable)
+        {
+            MetaData gdprMetaData = new MetaData("gdpr");
+            gdprMetaData.Set("consent", enable.ToString());
+            Advertisement.SetMetaData(gdprMetaData);
         }
 
         public IBannerAd CreateBanner(string placementId, BannerPosition adPosition)

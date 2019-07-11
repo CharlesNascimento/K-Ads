@@ -1,4 +1,5 @@
-﻿using KansusGames.KansusAds.Core;
+﻿using ChartboostSDK;
+using KansusGames.KansusAds.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,13 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
             Debug.Log("Chartboost App Signature: " + credentials[1]);
 
             ChartboostSDK.Chartboost.CreateWithAppId(credentials[0], credentials[1]);
+        }
+
+        public void SetBehavioralTargetingEnabled(bool enable)
+        {
+            var consent = enable ? CBPIDataUseConsent.YesBehavioral : CBPIDataUseConsent.NoBehavioral;
+
+            ChartboostSDK.Chartboost.setPIDataUseConsent(consent);
         }
 
         public IBannerAd CreateBanner(string placementId, BannerPosition adPosition)
