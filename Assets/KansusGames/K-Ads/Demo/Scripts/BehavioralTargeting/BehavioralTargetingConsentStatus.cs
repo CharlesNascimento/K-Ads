@@ -1,4 +1,4 @@
-﻿namespace KansusGames.KansusAds.Core
+﻿namespace KansusGames.KansusAds.Demo.BehavioralTargeting
 {
     public enum BehavioralTargetingConsentStatus
     {

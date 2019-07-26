@@ -4,10 +4,13 @@ using UnityEngine;
 
 namespace KansusGames.KansusAds.Demo
 {
-    public abstract class DemoBase<TAdPlatform> : MonoBehaviour where TAdPlatform : IAdPlatform, new()
+    public abstract class DemoBase<TAdPlatform> : MonoBehaviour where TAdPlatform : IAdNetwork, new()
     {
         [SerializeField]
         protected AdManagerSettings adManagerSettings;
+
+        [SerializeField]
+        protected bool behavioralTargeting = true;
 
         [SerializeField]
         private string bannerPlacementId;
@@ -24,14 +27,11 @@ namespace KansusGames.KansusAds.Demo
 
         protected virtual void Initialize()
         {
-            IAdPlatform adPlatform = new TAdPlatform();
+            IAdNetwork adPlatform = new TAdPlatform();
 
             adManager = new AdManager(adPlatform, adManagerSettings);
 
-            Debug.Log("BehavioralTargetingConsentStatus: " + adManager.GetBehavioralTargetingConsentStatus());
-
-            adManager.Initialize();
-            adManager.SetBehavioralTargetingEnabled(true);
+            adManager.Initialize(behavioralTargeting, CreateExtras());
         }
 
         public void ShowBannerAd()
@@ -58,6 +58,11 @@ namespace KansusGames.KansusAds.Demo
         public void ShowRewardedVideoAd()
         {
             adManager.ShowRewardedVideoAd(rewardedVideoPlacementId);
+        }
+
+        protected virtual AdNetworkExtras CreateExtras()
+        {
+            return null;
         }
 
         private void Start()

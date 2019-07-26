@@ -11,15 +11,9 @@ namespace KansusGames.KansusAds.Manager
     /// </summary>
     public class AdManager : IAdManager
     {
-        #region Constants
-
-        private const string ConsentStatusKey = "BehavioralTargetingConsentStatus";
-
-        #endregion
-
         #region Fields
 
-        private readonly IAdPlatform adPlatform;
+        private readonly IAdNetwork adPlatform;
         private readonly AdManagerSettings settings;
 
         private readonly Dictionary<string, IBannerAd> bannersMap;
@@ -46,7 +40,7 @@ namespace KansusGames.KansusAds.Manager
         /// </summary>
         /// <param name="adPlatform">The advertisement network used by the manager.</param>
         /// <param name="settings">The manager settings.</param>
-        public AdManager(IAdPlatform adPlatform, AdManagerSettings settings)
+        public AdManager(IAdNetwork adPlatform, AdManagerSettings settings)
         {
             this.adPlatform = adPlatform;
             this.settings = settings;
@@ -62,30 +56,12 @@ namespace KansusGames.KansusAds.Manager
 
         #region IAdManager
 
-        public void Initialize()
+        public void Initialize(bool servePersonalizedAds = true, AdNetworkExtras extras = null)
         {
-            adPlatform.Initialize(settings.AppId, settings.TestMode, settings.TestDevices);
+            adPlatform.Initialize(settings.AppId, servePersonalizedAds, extras);
 
             InitializeInterstitialAds();
             InitializeRewardedVideoAds();
-        }
-
-        public void SetBehavioralTargetingEnabled(bool enable)
-        {
-            adPlatform.SetBehavioralTargetingEnabled(enable);
-
-            var status = enable ?
-                (int)BehavioralTargetingConsentStatus.Agreed :
-                (int)BehavioralTargetingConsentStatus.Declined;
-
-            PlayerPrefs.SetInt(ConsentStatusKey, status);
-        }
-
-        public BehavioralTargetingConsentStatus GetBehavioralTargetingConsentStatus()
-        {
-            var status = PlayerPrefs.GetInt(ConsentStatusKey, 0);
-
-            return (BehavioralTargetingConsentStatus)status;
         }
 
         public void ShowBannerAd(string placementId, Action onShow = null, Action<string> onFailedToLoad = null)
@@ -138,15 +114,21 @@ namespace KansusGames.KansusAds.Manager
             placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
 
             var interstitialAd = interstitialsMap[placementId];
+            var adSettings = settings.InterstitalAds.FirstOrDefault(x => x.PlacementId == placementId);
 
             if (interstitialAd == null || !interstitialAd.IsLoaded())
             {
                 Debug.LogWarning("Interstitial ad not loaded");
+
+                if (adSettings.LoadAutomatically)
+                {
+                    LoadInterstitialAd(placementId);
+                }
+
                 return;
             }
 
             var onCloseCallback = onClose;
-            var adSettings = settings.InterstitalAds.FirstOrDefault(x => x.PlacementId == placementId);
             var lastTimePlayed = lastTimePlayedMap.ContainsKey(placementId) ? lastTimePlayedMap[placementId] : 0;
 
             if (CurrentTimeInSeconds - lastTimePlayed < adSettings.TimeCap)
@@ -184,17 +166,22 @@ namespace KansusGames.KansusAds.Manager
             placementId = GetPlacementIdOrDefault(placementId, settings.RewardedVideoAds);
 
             var rewardedVideo = rewardedVideosMap[placementId];
+            var adSettings = settings.RewardedVideoAds.FirstOrDefault(x => x.PlacementId == placementId);
 
             if (rewardedVideo == null || !rewardedVideo.IsLoaded())
             {
                 Debug.LogWarning("Rewarded video ad not loaded");
+
+                if (adSettings.LoadAutomatically)
+                {
+                    LoadRewardedVideoAd(placementId);
+                }
+
                 return;
             }
 
             Action onSkipCallback = onSkip;
             Action onEarnRewardCallback = onEarnReward;
-
-            var adSettings = settings.RewardedVideoAds.FirstOrDefault(x => x.PlacementId == placementId);
 
             if (adSettings.LoadAutomatically)
             {

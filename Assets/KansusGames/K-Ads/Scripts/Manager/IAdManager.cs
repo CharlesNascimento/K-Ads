@@ -1,6 +1,7 @@
-﻿using System;
+﻿using KansusGames.KansusAds.Core;
+using System;
 
-namespace KansusGames.KansusAds.Core
+namespace KansusGames.KansusAds.Manager
 {
 
     /// <summary>
@@ -11,19 +12,10 @@ namespace KansusGames.KansusAds.Core
         /// <summary>
         /// Initializes the ad manager.
         /// </summary>
-        void Initialize();
-
-        /// <summary>
-        /// Enables or disables behavioral targeting advertisements.
-        /// </summary>
-        /// <param name="enable">A boolean indicating whether behavioral targeting should be enabled.</param>
-        void SetBehavioralTargetingEnabled(bool enable);
-
-        /// <summary>
-        /// Gets the status of consent of the user for behavioral targeting advertisements. 
-        /// </summary>
-        /// <returns>The consent status.</returns>
-        BehavioralTargetingConsentStatus GetBehavioralTargetingConsentStatus();
+        /// <param name="servePersonalizedAds">A boolean indicating whether behavioral targeting
+        /// should be enabled.</param>
+        /// <param name="extras">Optional ad-network-specific configuration.</param>
+        void Initialize(bool servePersonalizedAds = true, AdNetworkExtras extras = null);
 
         /// <summary>
         /// Shows a banner advertisement.
@@ -44,7 +36,7 @@ namespace KansusGames.KansusAds.Core
 
         /// <summary>
         /// Loads an interstitial ad. It is important to notice that the request may not be
-        /// filled by the ad platform.
+        /// filled by the ad network.
         /// </summary>
         /// <param name="placementId">The placement id which identifies the ad. If not provided,
         /// a default one will be used.</param>
@@ -64,7 +56,7 @@ namespace KansusGames.KansusAds.Core
 
         /// <summary>
         /// Loads a rewarded video ad. It is important to notice that the request may not be
-        /// filled by the ad platform.
+        /// filled by the ad network.
         /// </summary>
         /// <param name="placementId">The placement id which identifies the ad. If not provided,
         /// a default one will be used.</param>

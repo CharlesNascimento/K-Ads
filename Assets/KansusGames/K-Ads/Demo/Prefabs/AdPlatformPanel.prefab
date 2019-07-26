@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2741283842797773542}
   - component: {fileID: 2741283842797773560}
   - component: {fileID: 2741283842797773561}
+  - component: {fileID: 1515868981830771352}
   m_Layer: 5
   m_Name: AdPlatformPanel
   m_TagString: Untagged
@@ -78,6 +79,22 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!111 &1515868981830771352
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2741283842797773543}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 3f41d0d9e4b5b764089b2ff8950ae03a, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 3f41d0d9e4b5b764089b2ff8950ae03a, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &2741283842876212999
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,10 +241,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 72
+    m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 7
     m_MaxSize: 72
     m_Alignment: 1
     m_AlignByGeometry: 0

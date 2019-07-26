@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace KansusGames.KansusAds.Manager
+namespace KansusGames.KansusAds.Demo.BehavioralTargeting
 {
     /// <summary>
     /// Default implementation of a behavioral targeting opt-in dialog.

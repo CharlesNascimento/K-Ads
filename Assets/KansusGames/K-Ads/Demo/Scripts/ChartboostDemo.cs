@@ -2,7 +2,7 @@
 
 namespace KansusGames.KansusAds.Demo
 {
-    public class ChartboostDemo : DemoBase<ChartboostAdPlatform>
+    public class ChartboostDemo : DemoBase<ChartboostAdNetwork>
     {
 
     }

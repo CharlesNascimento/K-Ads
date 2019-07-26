@@ -856,9 +856,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adManagerSettings: {fileID: 11400000, guid: e93fec464a1e5d340bd7c841484dcdb8, type: 2}
+  behavioralTargeting: 1
   bannerPlacementId: banner
   interstitialPlacementId: video
   rewardedVideoPlacementId: rewardedVideo
+  testMode: 1
 --- !u!4 &1601832222
 Transform:
   m_ObjectHideFlags: 0
@@ -886,9 +888,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adManagerSettings: {fileID: 11400000, guid: 74f147f37b79e8245846af577795d276, type: 2}
+  behavioralTargeting: 1
   bannerPlacementId: ca-app-pub-8189179944227719/4612641279
   interstitialPlacementId: ca-app-pub-8189179944227719/3894509876
   rewardedVideoPlacementId: ca-app-pub-8189179944227719/5774761278
+  childDirected: 0
+  testDevices:
+  - 5D755F97C43B6DCAB7BCED6246BD1A5F
 --- !u!114 &1601832224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,6 +908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adManagerSettings: {fileID: 11400000, guid: 514fba7a90da0a844920b5c76391e36d, type: 2}
+  behavioralTargeting: 1
   bannerPlacementId: Default
   interstitialPlacementId: Default
   rewardedVideoPlacementId: Default

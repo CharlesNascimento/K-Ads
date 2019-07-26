@@ -1,19 +1,18 @@
 ﻿using ChartboostSDK;
 using KansusGames.KansusAds.Core;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace KansusGames.KansusAds.Adapter.Chartboost
 {
     /// <summary>
-    /// Chartboost implementation of an Ad Platform.
+    /// Chartboost implementation of an ad network.
     /// </summary>
-    public class ChartboostAdPlatform : IAdPlatform
+    public class ChartboostAdNetwork : IAdNetwork
     {
         #region IAdPlatform
 
-        public void Initialize(string appId, bool testMode, List<string> testDevices = null)
+        public void Initialize(string appId, bool servePersonalizedAds = true, AdNetworkExtras extras = null)
         {
             var credentials = appId.Split(';');
 
@@ -28,13 +27,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
             Debug.Log("Chartboost App Signature: " + credentials[1]);
 
             ChartboostSDK.Chartboost.CreateWithAppId(credentials[0], credentials[1]);
-        }
-
-        public void SetBehavioralTargetingEnabled(bool enable)
-        {
-            var consent = enable ? CBPIDataUseConsent.YesBehavioral : CBPIDataUseConsent.NoBehavioral;
-
-            ChartboostSDK.Chartboost.setPIDataUseConsent(consent);
+            SetBehavioralTargetingEnabled(servePersonalizedAds);
         }
 
         public IBannerAd CreateBanner(string placementId, BannerPosition adPosition)
@@ -50,6 +43,17 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
         public IRewardedVideoAd CreateRewardedVideoAd(string placementId)
         {
             return new ChartboostRewardedVideoAd(placementId);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void SetBehavioralTargetingEnabled(bool enable)
+        {
+            var consent = enable ? CBPIDataUseConsent.YesBehavioral : CBPIDataUseConsent.NoBehavioral;
+
+            ChartboostSDK.Chartboost.setPIDataUseConsent(consent);
         }
 
         #endregion

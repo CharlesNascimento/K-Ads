@@ -518,10 +518,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adManagerSettings: {fileID: 11400000, guid: 74f147f37b79e8245846af577795d276, type: 2}
+  behavioralTargeting: 1
   bannerPlacementId: 
   interstitialPlacementId: 
   rewardedVideoPlacementId: 
-  optInDialog: {fileID: 1372706098}
+  childDirected: 0
+  testDevices:
+  - 5D755F97C43B6DCAB7BCED6246BD1A5F
+  optInDialog: {fileID: 1612675387}
 --- !u!1001 &1372706096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -713,7 +717,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1372706098}
+      objectReference: {fileID: 1372706101}
     - target: {fileID: 796495683131327352, guid: 0fe3eb112e3683741b2e98e53154f90d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -791,9 +795,20 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 796495684041730336, guid: 0fe3eb112e3683741b2e98e53154f90d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1372706101}
+    - target: {fileID: 796495684041730336, guid: 0fe3eb112e3683741b2e98e53154f90d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnAgreeButtonPressed
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 796495684073824142, guid: 0fe3eb112e3683741b2e98e53154f90d, type: 3}
     - {fileID: 796495683131327351, guid: 0fe3eb112e3683741b2e98e53154f90d, type: 3}
+    - {fileID: 796495684073824143, guid: 0fe3eb112e3683741b2e98e53154f90d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0fe3eb112e3683741b2e98e53154f90d, type: 3}
 --- !u!224 &1372706097 stripped
 RectTransform:
@@ -801,18 +816,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1372706096}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1372706098 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 796495684073824143, guid: 0fe3eb112e3683741b2e98e53154f90d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1372706096}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1372706099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd1a3fe0052f084894026528301ceb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1372706099 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 796495684073824178, guid: 0fe3eb112e3683741b2e98e53154f90d,
@@ -835,6 +838,19 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &1372706101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372706099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12dbb3ed24c371547b67fe779758340e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  privacyPolicyURL: https://bubbles.flycricket.io/privacy.html
 --- !u!1001 &1612675384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -957,7 +973,38 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 796495683131327352, guid: 7c317e95a916f5b46b5d5ec63705a108,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1612675387}
+    - target: {fileID: 796495683131327352, guid: 7c317e95a916f5b46b5d5ec63705a108,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPrivacyPolicyButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 796495684041730336, guid: 7c317e95a916f5b46b5d5ec63705a108,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1612675387}
+    - target: {fileID: 796495684041730336, guid: 7c317e95a916f5b46b5d5ec63705a108,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnAgreeButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 796495684709520671, guid: 7c317e95a916f5b46b5d5ec63705a108,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1612675387}
+    - target: {fileID: 796495684709520671, guid: 7c317e95a916f5b46b5d5ec63705a108,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnDeclineButtonPressed
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 796495684073824143, guid: 7c317e95a916f5b46b5d5ec63705a108, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7c317e95a916f5b46b5d5ec63705a108, type: 3}
 --- !u!224 &1612675385 stripped
 RectTransform:
@@ -965,6 +1012,25 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1612675384}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1612675386 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 796495684073824178, guid: 7c317e95a916f5b46b5d5ec63705a108,
+    type: 3}
+  m_PrefabInstance: {fileID: 1612675384}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1612675387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612675386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12dbb3ed24c371547b67fe779758340e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  privacyPolicyURL: https://bubbles.flycricket.io/privacy.html
 --- !u!1 &1799048131
 GameObject:
   m_ObjectHideFlags: 0

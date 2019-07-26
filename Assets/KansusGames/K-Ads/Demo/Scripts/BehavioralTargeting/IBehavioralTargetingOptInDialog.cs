@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KansusGames.KansusAds.Manager
+namespace KansusGames.KansusAds.Demo.BehavioralTargeting
 {
     /// <summary>
     /// Specifies a dialog which asks the player whether he consents with

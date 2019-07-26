@@ -2,7 +2,6 @@
 using KansusGames.KansusAds.Core;
 using System;
 using UnityEngine;
-using static KansusGames.KansusAds.Adapter.AdMob.AdMobAdPlatform;
 
 namespace KansusGames.KansusAds.Adapter.AdMob
 {
@@ -14,7 +13,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
         #region Fields
 
         private readonly string placementId;
-        private readonly AdRequestBuilderFactory adRequestBuilderFactory;
+        private readonly Func<AdRequest.Builder> adRequestBuilderFactory;
         private InterstitialAd interstitialAd;
 
         #endregion
@@ -26,7 +25,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
         /// </summary>
         /// <param name="placementId">The placement id for this ad.</param>
         /// <param name="adRequestBuilderFactory">A factory to create ad request builders.</param>
-        public AdMobInterstitialAd(string placementId, AdRequestBuilderFactory adRequestBuilderFactory)
+        public AdMobInterstitialAd(string placementId, Func<AdRequest.Builder> adRequestBuilderFactory)
         {
             this.placementId = placementId;
             this.adRequestBuilderFactory = adRequestBuilderFactory;
@@ -57,7 +56,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
                 onFailedToLoad?.Invoke(args.Message);
             };
 
-            AdRequest request = adRequestBuilderFactory.CreateBuilder().Build();
+            AdRequest request = adRequestBuilderFactory().Build();
 
             interstitialAd.LoadAd(request);
         }

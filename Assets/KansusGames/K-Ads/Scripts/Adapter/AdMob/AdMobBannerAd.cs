@@ -3,7 +3,6 @@ using KansusGames.KansusAds.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static KansusGames.KansusAds.Adapter.AdMob.AdMobAdPlatform;
 
 namespace KansusGames.KansusAds.Adapter.AdMob
 {
@@ -17,7 +16,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
         private readonly string placement;
         private BannerView bannerView;
         private readonly BannerPosition adPosition;
-        private readonly AdRequestBuilderFactory adRequestBuilderFactory;
+        private readonly Func<AdRequest.Builder> adRequestBuilderFactory;
 
         private static readonly Dictionary<BannerPosition, AdPosition> adPositionMap
             = new Dictionary<BannerPosition, AdPosition>()
@@ -41,7 +40,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
         /// <param name="placement">The placement for this interstitial ad.</param>
         /// <param name="adRequestBuilderFactory">A factory to create ad request builders.</param>
         public AdMobBannerAd(string placement, BannerPosition adPosition,
-            AdRequestBuilderFactory adRequestBuilderFactory)
+            Func<AdRequest.Builder> adRequestBuilderFactory)
         {
             this.placement = placement;
             this.adPosition = adPosition;
@@ -73,7 +72,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
 
             bannerView.OnAdLoaded += loadCallback;
 
-            AdRequest request = adRequestBuilderFactory.CreateBuilder().Build();
+            AdRequest request = adRequestBuilderFactory().Build();
 
             bannerView.LoadAd(request);
         }
