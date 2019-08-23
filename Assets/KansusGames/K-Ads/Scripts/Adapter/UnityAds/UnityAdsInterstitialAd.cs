@@ -36,7 +36,7 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
             return Advertisement.IsReady(placementId);
         }
 
-        public void Load(Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void Load(Action onLoad = null, Action<string> onFail = null)
         {
             if (Advertisement.IsReady(placementId))
             {
@@ -47,11 +47,11 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
             {
                 var message = "Unity Ads interstitial ad could not be loaded";
                 Debug.LogWarning(message);
-                onFailedToLoad?.Invoke(message);
+                onFail?.Invoke(message);
             }
         }
 
-        public void Show(Action onOpening = null, Action onClose = null)
+        public void Show(Action onClose = null, Action<string> onFail = null)
         {
             var options = new ShowOptions
             {
@@ -61,6 +61,10 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
                     {
                         Debug.Log("Unty Ads interstitial ad closed");
                         onClose?.Invoke();
+                    }
+                    else
+                    {
+                        onFail?.Invoke("Failed to show Unity Ads interstitial ad");
                     }
                 }
             };

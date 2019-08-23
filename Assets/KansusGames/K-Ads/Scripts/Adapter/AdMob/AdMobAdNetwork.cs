@@ -5,7 +5,6 @@ using BannerPosition = KansusGames.KansusAds.Core.BannerPosition;
 
 namespace KansusGames.KansusAds.Adapter.AdMob
 {
-
     /// <summary>
     /// AdMob implementation of an ad network.
     /// </summary>

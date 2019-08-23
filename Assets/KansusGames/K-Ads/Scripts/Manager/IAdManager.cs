@@ -3,7 +3,6 @@ using System;
 
 namespace KansusGames.KansusAds.Manager
 {
-
     /// <summary>
     /// Specifies a manager responsible for loading and showing ads.
     /// </summary>
@@ -41,37 +40,39 @@ namespace KansusGames.KansusAds.Manager
         /// <param name="placementId">The placement id which identifies the ad. If not provided,
         /// a default one will be used.</param>
         /// <param name="onLoad">Callback invoked when the ad is loaded successfully.</param>
-        /// <param name="onFailedToLoad">Callback invoked when the ad could not be loaded. Its
+        /// <param name="onFail">Callback invoked when the ad could not be loaded. Its
         /// string parameter represents a message indicating the problem.</param>
-        void LoadInterstitialAd(string placementId = null, Action onLoad = null, Action<string> onFailedToLoad = null);
+        void LoadInterstitialAd(Action onLoad = null, Action<string> onFail = null, string placementId = null);
 
         /// <summary>
         /// Show a loaded interstitial ad.
         /// </summary>
+        /// <param name="onClose">Callback invoked when the ad is closed.</param>
+        /// <param name="onFail">Callback invoked when the ad could not be presented. Its
+        /// string parameter represents a message indicating the problem.</param>
         /// <param name="placementId">The placement id which identifies the ad. If not provided,
         /// a default one will be used.</param>
-        /// <param name="onOpening">Callback invoked when the user opens the ad.</param>
-        /// <param name="onClose">Callback invoked when the ad is closed.</param>
-        void ShowInterstitialAd(string placementId = null, Action onOpening = null, Action onClose = null);
+        void ShowInterstitialAd(Action onClose = null, Action<string> onFail = null, string placementId = null);
 
         /// <summary>
         /// Loads a rewarded video ad. It is important to notice that the request may not be
         /// filled by the ad network.
         /// </summary>
+        /// <param name="onLoad">Callback invoked when the ad is loaded successfully.</param>
+        /// <param name="onFail">Callback invoked when the ad could not be loaded. Its
+        /// string parameter represents a message indicating the problem.</param>
         /// <param name="placementId">The placement id which identifies the ad. If not provided,
         /// a default one will be used.</param>
-        /// <param name="onLoad">Callback invoked when the ad is loaded successfully.</param>
-        /// <param name="onFailedToLoad">Callback invoked when the ad could not be loaded. Its
-        /// string parameter represents a message indicating the problem.</param>
-        void LoadRewardedVideoAd(string placementId = null, Action onLoad = null, Action<string> onFailedToLoad = null);
+        void LoadRewardedVideoAd(Action onLoad = null, Action<string> onFail = null, string placementId = null);
 
         /// <summary>
         /// Show a loaded rewarded video ad.
         /// </summary>
+        /// <param name="onResult">Callback invoked when the video is fully played or skipped.</param>
+        /// <param name="onFail">Callback invoked when the ad could not be presented. Its
+        /// string parameter represents a message indicating the problem.</param>
         /// <param name="placementId">The placement id which identifies the ad. If not provided,
         /// a default one will be used.</param>
-        /// <param name="onEarnReward">Callback invoked when the video is fully played.</param>
-        /// <param name="onSkip">Callback invoked when the ad is not fully played.</param>
-        void ShowRewardedVideoAd(string placementId = null, Action onEarnReward = null, Action onSkip = null);
+        void ShowRewardedVideoAd(Action<bool> onResult = null, Action<string> onFail = null, string placementId = null);
     }
 }

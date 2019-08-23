@@ -36,7 +36,7 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
             return Advertisement.IsReady(placementId);
         }
 
-        public void Load(Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void Load(Action onLoad = null, Action<string> onFail = null)
         {
             if (Advertisement.IsReady(placementId))
             {
@@ -45,13 +45,13 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
             }
             else
             {
-                var message = "Unity Ads rewarded video ad could not be loaded";
+                const string message = "Unity Ads rewarded video ad could not be loaded";
                 Debug.LogWarning(message);
-                onFailedToLoad?.Invoke(message);
+                onFail?.Invoke(message);
             }
         }
 
-        public void Show(Action onEarnReward = null, Action onSkip = null)
+        public void Show(Action<bool> onResult = null, Action<string> onFail = null)
         {
             var options = new ShowOptions
             {
@@ -60,12 +60,18 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
                     if (result == ShowResult.Finished)
                     {
                         Debug.Log("Unity Ads rewarded video ad completed");
-                        onEarnReward?.Invoke();
+                        onResult?.Invoke(true);
+                    }
+                    else if (result == ShowResult.Skipped)
+                    {
+                        Debug.Log("Unity Ads rewarded video ad skipped");
+                        onResult?.Invoke(false);
                     }
                     else
                     {
-                        Debug.Log("Unity Ads rewarded video ad skipped");
-                        onSkip?.Invoke();
+                        const string message = "Failed to show Unity Ads rewarded video ad";
+                        Debug.Log(message);
+                        onFail?.Invoke(message);
                     }
                 }
             };

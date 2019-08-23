@@ -18,15 +18,16 @@ namespace KansusGames.KansusAds.Core
         /// filled.
         /// </summary>
         /// <param name="onLoad">Callback invoked when the ad is loaded successfully.</param>
-        /// <param name="onFailedToLoad">Callback invoked when the ad could not be loaded. Its
+        /// <param name="onFail">Callback invoked when the ad could not be loaded. Its
         /// string parameter represents a message indicating the problem.</param>
-        void Load(Action onLoad = null, Action<string> onFailedToLoad = null);
+        void Load(Action onLoad = null, Action<string> onFail = null);
 
         /// <summary>
         /// Presents this ad to the user.
         /// </summary>
-        /// <param name="onOpening">Callback invoked when the user opens the ad.</param>
         /// <param name="onClose">Callback invoked when the ad is closed.</param>
-        void Show(Action onOpening = null, Action onClose = null);
+        /// <param name="onFail">Callback invoked when the ad could not be presented. Its
+        /// string parameter represents a message indicating the problem.</param>
+        void Show(Action onClose = null, Action<string> onFail = null);
     }
 }

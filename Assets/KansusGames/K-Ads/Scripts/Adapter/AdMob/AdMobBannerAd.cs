@@ -51,14 +51,14 @@ namespace KansusGames.KansusAds.Adapter.AdMob
 
         #region IInterstitialAd
 
-        public void Show(Action onShow = null, Action<string> onFailedToLoad = null)
+        public void Show(Action onShow = null, Action<string> onFail = null)
         {
             bannerView = new BannerView(placement, AdSize.SmartBanner, adPositionMap[adPosition]);
 
             bannerView.OnAdFailedToLoad += (sender, args) =>
             {
                 Debug.LogWarning("Failed to load AdMob banner ad: " + args.Message);
-                onFailedToLoad?.Invoke(args.Message);
+                onFail?.Invoke(args.Message);
             };
 
             EventHandler<EventArgs> loadCallback = null;

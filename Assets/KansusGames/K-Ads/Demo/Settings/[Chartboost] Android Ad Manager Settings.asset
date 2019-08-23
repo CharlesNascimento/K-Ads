@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d946f491b4772843bf6c72c0f3b5aef, type: 3}
   m_Name: '[Chartboost] Android Ad Manager Settings'
   m_EditorClassIdentifier: 
-  appId: 5d3a2db2ae8ea95bf528ffde;34d93ff08da334019e65c039b743b8e23c1c5afc
+  appId: 5d6055cbcec5a90af866557d;1653902217e507890725af5de3466d29dc4d0aa1
   bannerAds: []
   interstitalAds:
   - placementId: Default

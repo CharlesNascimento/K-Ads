@@ -12,13 +12,12 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
     {
         #region Fields
 
-        private readonly string placementId;
+        private readonly CBLocation location;
 
         private Action onLoadCallback;
-        private Action<string> onFailedToLoadCallback;
+        private Action<string> onFail;
 
-        private Action onEarnRewardCallback;
-        private Action onSkipCallback;
+        private Action<bool> onResult;
 
         #endregion
 
@@ -30,7 +29,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
         /// <param name="placementId">The placement id for this ad.</param>
         public ChartboostRewardedVideoAd(string placementId)
         {
-            this.placementId = placementId;
+            location = CBLocation.locationFromName(placementId);
         }
 
         #endregion
@@ -39,21 +38,21 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
 
         public bool IsLoaded()
         {
-            return ChartboostSDK.Chartboost.hasRewardedVideo(CBLocation.Default);
+            return ChartboostSDK.Chartboost.hasRewardedVideo(location);
         }
 
-        public void Load(Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void Load(Action onLoad = null, Action<string> onFail = null)
         {
             onLoadCallback = onLoad;
-            onFailedToLoadCallback = onFailedToLoad;
+            this.onFail = onFail;
 
             ChartboostSDK.Chartboost.didCacheRewardedVideo += LoadCallback;
             ChartboostSDK.Chartboost.didFailToLoadRewardedVideo += LoadFailedCallback;
 
-            ChartboostSDK.Chartboost.cacheRewardedVideo(CBLocation.Default);
+            ChartboostSDK.Chartboost.cacheRewardedVideo(location);
         }
 
-        public void Show(Action onEarnReward = null, Action onSkip = null)
+        public void Show(Action<bool> onResult = null, Action<string> onFail = null)
         {
             if (!IsLoaded())
             {
@@ -61,13 +60,14 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
                 return;
             }
 
-            onEarnRewardCallback = onEarnReward;
-            onSkipCallback = onSkip;
+            this.onResult = onResult;
+            this.onFail = onFail;
 
             ChartboostSDK.Chartboost.didCompleteRewardedVideo += EarnRewardCallback;
             ChartboostSDK.Chartboost.didDismissRewardedVideo += SkipCallback;
+            ChartboostSDK.Chartboost.didFailToLoadRewardedVideo += LoadFailedCallback;
 
-            ChartboostSDK.Chartboost.showRewardedVideo(CBLocation.Default);
+            ChartboostSDK.Chartboost.showRewardedVideo(location);
         }
 
         #endregion
@@ -80,7 +80,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
 
             Debug.LogWarning("Failed to load Chartboost rewarded video: " + error.ToString());
 
-            onFailedToLoadCallback?.Invoke(error.ToString());
+            onFail?.Invoke(error.ToString());
         }
 
         private void LoadCallback(CBLocation location)
@@ -98,7 +98,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
 
             Debug.Log("Chartboost rewarded video ad completed");
 
-            onEarnRewardCallback?.Invoke();
+            onResult?.Invoke(true);
         }
 
         private void SkipCallback(CBLocation location)
@@ -107,7 +107,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
 
             Debug.Log("Chartboost rewarded video ad skipped");
 
-            onSkipCallback?.Invoke();
+            onResult?.Invoke(false);
         }
 
         private void ClearLoadCallbacks()
@@ -120,6 +120,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
         {
             ChartboostSDK.Chartboost.didCompleteRewardedVideo -= EarnRewardCallback;
             ChartboostSDK.Chartboost.didDismissRewardedVideo -= SkipCallback;
+            ChartboostSDK.Chartboost.didFailToLoadRewardedVideo -= LoadFailedCallback;
         }
 
         #endregion

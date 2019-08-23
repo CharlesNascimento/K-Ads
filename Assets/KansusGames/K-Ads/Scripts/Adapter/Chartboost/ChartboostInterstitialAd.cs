@@ -12,12 +12,11 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
     {
         #region Fields
 
-        private readonly string placementId;
+        private readonly CBLocation location;
 
         private Action onLoadCallback;
-        private Action<string> onFailedToLoadCallback;
+        private Action<string> onFailCallback;
 
-        private Action onOpeningCallback;
         private Action onCloseCallback;
 
         #endregion
@@ -30,7 +29,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
         /// <param name="placementId">The placement id for this ad.</param>
         public ChartboostInterstitialAd(string placementId)
         {
-            this.placementId = placementId;
+            location = CBLocation.locationFromName(placementId);
         }
 
         #endregion
@@ -39,21 +38,21 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
 
         public bool IsLoaded()
         {
-            return ChartboostSDK.Chartboost.hasInterstitial(CBLocation.Default);
+            return ChartboostSDK.Chartboost.hasInterstitial(location);
         }
 
-        public void Load(Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void Load(Action onLoad = null, Action<string> onFail = null)
         {
             onLoadCallback = onLoad;
-            onFailedToLoadCallback = onFailedToLoad;
+            onFailCallback = onFail;
 
             ChartboostSDK.Chartboost.didCacheInterstitial += LoadCallback;
             ChartboostSDK.Chartboost.didFailToLoadInterstitial += LoadFailedCallback;
 
-            ChartboostSDK.Chartboost.cacheInterstitial(CBLocation.Default);
+            ChartboostSDK.Chartboost.cacheInterstitial(location);
         }
 
-        public void Show(Action onOpening = null, Action onClose = null)
+        public void Show(Action onClose = null, Action<string> onFail = null)
         {
             if (!IsLoaded())
             {
@@ -61,13 +60,13 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
                 return;
             }
 
-            onOpeningCallback = onOpening;
             onCloseCallback = onClose;
+            onFailCallback = onFail;
 
-            ChartboostSDK.Chartboost.didClickInterstitial += OpeningCallback;
             ChartboostSDK.Chartboost.didDismissInterstitial += CloseCallback;
+            ChartboostSDK.Chartboost.didFailToLoadInterstitial += LoadFailedCallback;
 
-            ChartboostSDK.Chartboost.showInterstitial(CBLocation.Default);
+            ChartboostSDK.Chartboost.showInterstitial(location);
         }
 
         private void LoadFailedCallback(CBLocation location, CBImpressionError error)
@@ -76,7 +75,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
 
             Debug.LogWarning("Failed to load Chartboost interstitial: " + error.ToString());
 
-            onFailedToLoadCallback?.Invoke(error.ToString());
+            onFailCallback?.Invoke(error.ToString());
         }
 
         private void LoadCallback(CBLocation location)
@@ -86,15 +85,6 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
             Debug.Log("Chartboost interstitial loaded successfully");
 
             onLoadCallback?.Invoke();
-        }
-
-        private void OpeningCallback(CBLocation location)
-        {
-            ClearShowCallbacks();
-
-            Debug.Log("Opening Chartboost interstitial ad");
-
-            onOpeningCallback?.Invoke();
         }
 
         private void CloseCallback(CBLocation location)
@@ -114,7 +104,7 @@ namespace KansusGames.KansusAds.Adapter.Chartboost
 
         private void ClearShowCallbacks()
         {
-            ChartboostSDK.Chartboost.didClickInterstitial -= OpeningCallback;
+            ChartboostSDK.Chartboost.didFailToLoadInterstitial -= LoadFailedCallback;
             ChartboostSDK.Chartboost.didDismissInterstitial -= CloseCallback;
         }
 

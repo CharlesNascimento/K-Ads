@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iOSAppId: CB_IOS_APP_ID
   iOSAppSecret: CB_IOS_APP_SIGNATURE
-  androidAppId: 5d1c2a212ec4c80b0070e162
-  androidAppSecret: 72b6e494c2fdb39235f1fabe666206d50f269c95
+  androidAppId: 5d3a2db2ae8ea95bf528ffde
+  androidAppSecret: 34d93ff08da334019e65c039b743b8e23c1c5afc
   amazonAppId: CB_AMAZON_APP_ID
   amazonAppSecret: CB_AMAZON_APP_SIGNATURE
   isLoggingEnabled: 0

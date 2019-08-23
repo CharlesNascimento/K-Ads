@@ -64,7 +64,7 @@ namespace KansusGames.KansusAds.Manager
             InitializeRewardedVideoAds();
         }
 
-        public void ShowBannerAd(string placementId, Action onShow = null, Action<string> onFailedToLoad = null)
+        public void ShowBannerAd(string placementId, Action onShow = null, Action<string> onFail = null)
         {
             placementId = GetPlacementIdOrDefault(placementId, settings.BannerAds);
 
@@ -84,7 +84,7 @@ namespace KansusGames.KansusAds.Manager
                 return;
             }
 
-            bannerAd.Show(onShow, onFailedToLoad);
+            bannerAd.Show(onShow, onFail);
 
             bannersMap[placementId] = bannerAd;
         }
@@ -98,18 +98,18 @@ namespace KansusGames.KansusAds.Manager
             bannerAd.Hide();
         }
 
-        public void LoadInterstitialAd(string placementId = null, Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void LoadInterstitialAd(Action onLoad = null, Action<string> onFail = null, string placementId = null)
         {
             placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
 
             var interstitial = adPlatform.CreateInterstitial(placementId);
 
-            interstitial.Load(onLoad, onFailedToLoad);
+            interstitial.Load(onLoad, onFail);
 
             interstitialsMap[placementId] = interstitial;
         }
 
-        public void ShowInterstitialAd(string placementId = null, Action onOpening = null, Action onClose = null)
+        public void ShowInterstitialAd(Action onClose = null, Action<string> onFail = null, string placementId = null)
         {
             placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
 
@@ -122,13 +122,14 @@ namespace KansusGames.KansusAds.Manager
 
                 if (adSettings.LoadAutomatically)
                 {
-                    LoadInterstitialAd(placementId);
+                    LoadInterstitialAd(null, null, placementId);
                 }
 
                 return;
             }
 
             var onCloseCallback = onClose;
+            var onFailCallback = onFail;
             var lastTimePlayed = lastTimePlayedMap.ContainsKey(placementId) ? lastTimePlayedMap[placementId] : 0;
 
             if (CurrentTimeInSeconds - lastTimePlayed < adSettings.TimeCap)
@@ -139,29 +140,36 @@ namespace KansusGames.KansusAds.Manager
 
             if (adSettings.LoadAutomatically)
             {
+                onFailCallback = (reason) =>
+                {
+                    LoadInterstitialAd(null, null, placementId);
+                    onFail?.Invoke(reason);
+                };
+
                 onCloseCallback = () =>
                 {
-                    LoadInterstitialAd(placementId);
+                    LoadInterstitialAd(null, null, placementId);
                     onClose?.Invoke();
                 };
             };
 
-            interstitialAd.Show(onOpening, onCloseCallback);
+            interstitialAd.Show(onCloseCallback, onFailCallback);
             lastTimePlayedMap[placementId] = CurrentTimeInSeconds;
         }
 
-        public void LoadRewardedVideoAd(string placementId, Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void LoadRewardedVideoAd(Action onLoad = null, Action<string> onFail = null, string placementId = null)
         {
             placementId = GetPlacementIdOrDefault(placementId, settings.RewardedVideoAds);
 
             var rewardedVideo = adPlatform.CreateRewardedVideoAd(placementId);
 
-            rewardedVideo.Load(onLoad, onFailedToLoad);
+            rewardedVideo.Load(onLoad, onFail);
 
             rewardedVideosMap[placementId] = rewardedVideo;
         }
 
-        public void ShowRewardedVideoAd(string placementId, Action onEarnReward = null, Action onSkip = null)
+        public void ShowRewardedVideoAd(Action<bool> onResult = null, Action<string> onFail = null,
+            string placementId = null)
         {
             placementId = GetPlacementIdOrDefault(placementId, settings.RewardedVideoAds);
 
@@ -174,31 +182,31 @@ namespace KansusGames.KansusAds.Manager
 
                 if (adSettings.LoadAutomatically)
                 {
-                    LoadRewardedVideoAd(placementId);
+                    LoadRewardedVideoAd(null, null, placementId);
                 }
 
                 return;
             }
 
-            Action onSkipCallback = onSkip;
-            Action onEarnRewardCallback = onEarnReward;
+            var onResultCallback = onResult;
+            var onFailCallback = onFail;
 
             if (adSettings.LoadAutomatically)
             {
-                onSkipCallback = () =>
+                onFailCallback = (reason) =>
                 {
-                    LoadRewardedVideoAd(placementId);
-                    onSkip?.Invoke();
+                    LoadRewardedVideoAd(null, null, placementId);
+                    onFail?.Invoke(reason);
                 };
 
-                onEarnRewardCallback = () =>
+                onResultCallback = (result) =>
                 {
-                    LoadRewardedVideoAd(placementId);
-                    onEarnReward?.Invoke();
+                    LoadRewardedVideoAd(null, null, placementId);
+                    onResult?.Invoke(result);
                 };
             };
 
-            rewardedVideo.Show(onEarnRewardCallback, onSkipCallback);
+            rewardedVideo.Show(onResultCallback, onFailCallback);
         }
 
         #endregion
@@ -211,7 +219,7 @@ namespace KansusGames.KansusAds.Manager
             {
                 if (ad.LoadAutomatically)
                 {
-                    LoadInterstitialAd(ad.PlacementId);
+                    LoadInterstitialAd(null, null, ad.PlacementId);
                 }
             }
         }
@@ -222,7 +230,7 @@ namespace KansusGames.KansusAds.Manager
             {
                 if (ad.LoadAutomatically)
                 {
-                    LoadRewardedVideoAd(ad.PlacementId);
+                    LoadRewardedVideoAd(null, null, ad.PlacementId);
                 }
             }
         }

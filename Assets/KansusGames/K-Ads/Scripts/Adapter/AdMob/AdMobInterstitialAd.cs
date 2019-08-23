@@ -40,7 +40,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
             return interstitialAd != null && interstitialAd.IsLoaded();
         }
 
-        public void Load(Action onLoad = null, Action<string> onFailedToLoad = null)
+        public void Load(Action onLoad = null, Action<string> onFail = null)
         {
             interstitialAd = new InterstitialAd(placementId);
 
@@ -53,7 +53,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
             interstitialAd.OnAdFailedToLoad += (sender, args) =>
             {
                 Debug.LogWarning("Failed to load AdMob interstitial: " + args.Message);
-                onFailedToLoad?.Invoke(args.Message);
+                onFail?.Invoke(args.Message);
             };
 
             AdRequest request = adRequestBuilderFactory().Build();
@@ -61,7 +61,7 @@ namespace KansusGames.KansusAds.Adapter.AdMob
             interstitialAd.LoadAd(request);
         }
 
-        public void Show(Action onOpening = null, Action onClose = null)
+        public void Show(Action onClose = null, Action<string> onFail = null)
         {
             if (interstitialAd == null || !interstitialAd.IsLoaded())
             {
@@ -69,10 +69,10 @@ namespace KansusGames.KansusAds.Adapter.AdMob
                 return;
             }
 
-            interstitialAd.OnAdLeavingApplication += (sender, args) =>
+            interstitialAd.OnAdFailedToLoad += (sender, args) =>
             {
-                Debug.Log("Opening AdMob interstitial ad");
-                onOpening?.Invoke();
+                Debug.Log("Failed to show AdMob interstitial ad");
+                onFail?.Invoke(args.Message);
             };
 
             interstitialAd.OnAdClosed += (sender, args) =>

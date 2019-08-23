@@ -57,7 +57,7 @@ namespace KansusGames.KansusAds.Demo
 
         public void ShowRewardedVideoAd()
         {
-            adManager.ShowRewardedVideoAd(rewardedVideoPlacementId);
+            adManager.ShowRewardedVideoAd(null, null, rewardedVideoPlacementId);
         }
 
         protected virtual AdNetworkExtras CreateExtras()
