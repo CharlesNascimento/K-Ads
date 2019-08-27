@@ -34,6 +34,14 @@ namespace KansusGames.KansusAds.Manager
         void HideBannerAd(string placementId = null);
 
         /// <summary>
+        /// Checks whether the interstitial ad with the provided placement id is loaded.
+        /// </summary>
+        /// <param name="placementId">The placement id which identifies the ad. If not provided,
+        /// a default one will be used.</param>
+        /// <returns>A boolean indicating if the ad is loaded.</returns>
+        bool IsInterstitialAdLoaded(string placementId = null);
+
+        /// <summary>
         /// Loads an interstitial ad. It is important to notice that the request may not be
         /// filled by the ad network.
         /// </summary>
@@ -53,6 +61,14 @@ namespace KansusGames.KansusAds.Manager
         /// <param name="placementId">The placement id which identifies the ad. If not provided,
         /// a default one will be used.</param>
         void ShowInterstitialAd(Action onClose = null, Action<string> onFail = null, string placementId = null);
+
+        /// <summary>
+        /// Checks whether the rewarded video ad with the provided placement id is loaded.
+        /// </summary>
+        /// <param name="placementId">The placement id which identifies the ad. If not provided,
+        /// a default one will be used.</param>
+        /// <returns>A boolean indicating if the ad is loaded.</returns>
+        bool IsRewardedVideoAdLoaded(string placementId = null);
 
         /// <summary>
         /// Loads a rewarded video ad. It is important to notice that the request may not be

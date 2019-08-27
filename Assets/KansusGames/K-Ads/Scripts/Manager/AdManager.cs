@@ -98,6 +98,15 @@ namespace KansusGames.KansusAds.Manager
             bannerAd.Hide();
         }
 
+        public bool IsInterstitialAdLoaded(string placementId = null)
+        {
+            placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
+
+            var interstitialAd = interstitialsMap[placementId];
+
+            return interstitialAd != null && interstitialAd.IsLoaded();
+        }
+
         public void LoadInterstitialAd(Action onLoad = null, Action<string> onFail = null, string placementId = null)
         {
             placementId = GetPlacementIdOrDefault(placementId, settings.InterstitalAds);
@@ -155,6 +164,15 @@ namespace KansusGames.KansusAds.Manager
 
             interstitialAd.Show(onCloseCallback, onFailCallback);
             lastTimePlayedMap[placementId] = CurrentTimeInSeconds;
+        }
+
+        public bool IsRewardedVideoAdLoaded(string placementId = null)
+        {
+            placementId = GetPlacementIdOrDefault(placementId, settings.RewardedVideoAds);
+
+            var rewardedVideoAd = rewardedVideosMap[placementId];
+
+            return rewardedVideoAd != null && rewardedVideoAd.IsLoaded();
         }
 
         public void LoadRewardedVideoAd(Action onLoad = null, Action<string> onFail = null, string placementId = null)
