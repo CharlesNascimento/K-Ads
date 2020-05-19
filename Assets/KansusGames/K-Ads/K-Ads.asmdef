@@ -1,0 +1,17 @@
+{
+    "name": "K-Ads",
+    "references": [
+        "GUID:a037b9f808b8c43ae91c527caf71d031",
+        "GUID:a7a28fc52e13b9b4ba387f9807fe6dc9",
+        "GUID:ff6de30450f3748908ff580f6ec64d9a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

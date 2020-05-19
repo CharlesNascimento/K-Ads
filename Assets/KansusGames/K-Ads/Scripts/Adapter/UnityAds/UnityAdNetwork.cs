@@ -21,7 +21,7 @@ namespace KansusGames.KansusAds.Adapter.UnityAds
             Advertisement.Initialize(appId, testMode);
         }
 
-        public IBannerAd CreateBanner(string placementId, BannerPosition adPosition)
+        public IBannerAd CreateBanner(string placementId, Core.BannerPosition adPosition)
         {
             return new UnityAdsBannerAd(placementId);
         }

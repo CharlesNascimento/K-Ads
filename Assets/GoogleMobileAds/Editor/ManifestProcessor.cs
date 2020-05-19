@@ -1,21 +1,24 @@
 #if UNITY_ANDROID
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Xml.Linq;
 
 using UnityEditor;
 using UnityEditor.Build;
-using UnityEditor.Callbacks;
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#endif
 using UnityEngine;
 
 using GoogleMobileAds.Editor;
 
+#if UNITY_2018_1_OR_NEWER
+public class ManifestProcessor : IPreprocessBuildWithReport
+#else
 public class ManifestProcessor : IPreprocessBuild
+#endif
 {
     private const string META_AD_MANAGER_APP = "com.google.android.gms.ads.AD_MANAGER_APP";
 
@@ -28,7 +31,11 @@ public class ManifestProcessor : IPreprocessBuild
 
     public int callbackOrder { get { return 0; } }
 
+#if UNITY_2018_1_OR_NEWER
+    public void OnPreprocessBuild(BuildReport report)
+#else
     public void OnPreprocessBuild(BuildTarget target, string path)
+#endif
     {
         string manifestPath = Path.Combine(
                 Application.dataPath, "Plugins/Android/GoogleMobileAdsPlugin/AndroidManifest.xml");
@@ -42,25 +49,25 @@ public class ManifestProcessor : IPreprocessBuild
         catch (IOException e)
         #pragma warning restore 0168
         {
-            Debug.LogError(
-                    "[GoogleMobileAds] AndroidManifest.xml is missing. Try re-importing the plugin.");
-            return;
+            StopBuildWithMessage("AndroidManifest.xml is missing. Try re-importing the plugin.");
         }
 
         XElement elemManifest = manifest.Element("manifest");
         if (elemManifest == null)
         {
-            Debug.LogError(
-                    "[GoogleMobileAds] AndroidManifest.xml is not valid. Try re-importing the plugin.");
-            return;
+            StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
         }
 
         XElement elemApplication = elemManifest.Element("application");
         if (elemApplication == null)
         {
-            Debug.LogError(
-                    "[GoogleMobileAds] AndroidManifest.xml is not valid. Try re-importing the plugin.");
-            return;
+            StopBuildWithMessage("AndroidManifest.xml is not valid. Try re-importing the plugin.");
+        }
+
+        if (!GoogleMobileAdsSettings.Instance.IsAdManagerEnabled && !GoogleMobileAdsSettings.Instance.IsAdMobEnabled)
+        {
+            GoogleMobileAdsSettingsEditor.OpenInspector();
+            StopBuildWithMessage("Neither Ad Manager nor AdMob is enabled yet.");
         }
 
         IEnumerable<XElement> metas = elemApplication.Descendants()
@@ -93,8 +100,8 @@ public class ManifestProcessor : IPreprocessBuild
 
             if (appId.Length == 0)
             {
-                Debug.LogError(
-                        "Android AdMob app ID is empty. Please enter a valid app ID to run ads properly.");
+                StopBuildWithMessage(
+                    "Android AdMob app ID is empty. Please enter a valid app ID to run ads properly.");
             }
 
             if (elemAdMobEnabled == null)
@@ -159,6 +166,16 @@ public class ManifestProcessor : IPreprocessBuild
             }
         }
         return null;
+    }
+
+    private void StopBuildWithMessage(string message)
+    {
+        string prefix = "[GoogleMobileAds] ";
+#if UNITY_2017_1_OR_NEWER
+        throw new BuildPlayerWindow.BuildMethodException(prefix + message);
+#else
+        throw new OperationCanceledException(prefix + message);
+#endif
     }
 }
 

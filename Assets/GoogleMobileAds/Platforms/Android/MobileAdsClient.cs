@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_ANDROID
-
 using System;
 using UnityEngine;
 
@@ -22,10 +20,13 @@ using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Android
 {
-    public class MobileAdsClient :
-    IMobileAdsClient
+    public class MobileAdsClient : AndroidJavaProxy, IMobileAdsClient
     {
         private static MobileAdsClient instance = new MobileAdsClient();
+
+        private Action<IInitializationStatusClient> initCompleteAction;
+
+        private MobileAdsClient() : base(Utils.OnInitializationCompleteListenerClassName) { }
 
         public static MobileAdsClient Instance
         {
@@ -43,6 +44,18 @@ namespace GoogleMobileAds.Android
             AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
             mobileAdsClass.CallStatic("initialize", activity, appId);
         }
+
+        public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
+        {
+            this.initCompleteAction = initCompleteAction;
+
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            mobileAdsClass.CallStatic("initialize", activity, this);
+        }
+
         public void SetApplicationVolume(float volume)
         {
             AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
@@ -55,11 +68,53 @@ namespace GoogleMobileAds.Android
             mobileAdsClass.CallStatic("setAppMuted", muted);
         }
 
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            AndroidJavaObject requestConfigurationAndroidObject = RequestConfigurationClient.BuildRequestConfiguration(requestConfiguration);
+            mobileAdsClass.CallStatic("setRequestConfiguration", requestConfigurationAndroidObject);
+        }
+
+        public RequestConfiguration GetRequestConfiguration()
+        {
+            AndroidJavaClass mobileAdsClass = new AndroidJavaClass(Utils.MobileAdsClassName);
+            AndroidJavaObject androidRequestConfiguration = mobileAdsClass.CallStatic<AndroidJavaObject>("getRequestConfiguration");
+            RequestConfiguration requestConfiguration = RequestConfigurationClient.GetRequestConfiguration(androidRequestConfiguration);
+            return requestConfiguration;
+        }
+
         public void SetiOSAppPauseOnBackground(bool pause)
         {
             // Do nothing on Android. Default behavior is to pause when app is backgrounded.
         }
+
+        public float GetDeviceScale()
+        {
+            AndroidJavaClass playerClass = new AndroidJavaClass(Utils.UnityActivityClassName);
+            AndroidJavaObject activity =
+                    playerClass.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject resources = activity.Call<AndroidJavaObject>("getResources");
+            AndroidJavaObject metrics = resources.Call<AndroidJavaObject>("getDisplayMetrics");
+            return metrics.Get<float>("density");
+        }
+
+        public int GetDeviceSafeWidth()
+        {
+          return Utils.GetScreenWidth();
+        }
+
+        #region Callbacks from OnInitializationCompleteListener.
+
+        public void onInitializationComplete(AndroidJavaObject initStatus)
+        {
+            if (initCompleteAction != null)
+            {
+                IInitializationStatusClient statusClient = new InitializationStatusClient(initStatus);
+                initCompleteAction(statusClient);
+            }
+        }
+
+        #endregion
+
     }
 }
-
-#endif

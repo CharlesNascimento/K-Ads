@@ -94,8 +94,9 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -127,11 +128,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 267442254}
     m_Modifications:
-    - target: {fileID: 2741283842797773543, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_Name
-      value: ChartboostPanel
-      objectReference: {fileID: 0}
     - target: {fileID: 2741283842797773542, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -237,6 +233,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2741283842797773543, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_Name
+      value: ChartboostPanel
+      objectReference: {fileID: 0}
     - target: {fileID: 2741283842797773561, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
       propertyPath: m_Color.r
@@ -252,25 +253,15 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.09371662
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283843817909384, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1601832224}
-    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowBannerAd
+      propertyPath: m_Name
+      value: Title
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283843817909386, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1601832224}
-    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowInterstitialAd
+      propertyPath: m_Text
+      value: Chartboost
       objectReference: {fileID: 0}
     - target: {fileID: 2741283843965161440, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
@@ -282,15 +273,25 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowRewardedVideoAd
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283843817909384, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_Name
-      value: Title
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1601832224}
+    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowInterstitialAd
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283843817909386, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_Text
-      value: Chartboost
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1601832224}
+    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowBannerAd
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594efa3f4b78b094f94e2687385a526a, type: 3}
@@ -328,7 +329,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 267442250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
@@ -345,7 +346,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 267442250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
@@ -408,11 +409,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 267442254}
     m_Modifications:
-    - target: {fileID: 2741283842797773543, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_Name
-      value: UnityAdsPanel
-      objectReference: {fileID: 0}
     - target: {fileID: 2741283842797773542, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -518,25 +514,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283842797773543, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1601832221}
-    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowBannerAd
+      propertyPath: m_Name
+      value: UnityAdsPanel
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283843817909384, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1601832221}
-    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowInterstitialAd
+      propertyPath: m_Name
+      value: Title
       objectReference: {fileID: 0}
     - target: {fileID: 2741283843965161440, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
@@ -548,10 +534,25 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowRewardedVideoAd
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283843817909384, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_Name
-      value: Title
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1601832221}
+    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowInterstitialAd
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1601832221}
+    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowBannerAd
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594efa3f4b78b094f94e2687385a526a, type: 3}
@@ -651,11 +652,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 267442254}
     m_Modifications:
-    - target: {fileID: 2741283842797773543, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_Name
-      value: AdMobPanel
-      objectReference: {fileID: 0}
     - target: {fileID: 2741283842797773542, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -761,6 +757,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2741283842797773543, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_Name
+      value: AdMobPanel
+      objectReference: {fileID: 0}
     - target: {fileID: 2741283842797773561, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
       propertyPath: m_Color.r
@@ -776,25 +777,15 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.3532485
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283843817909384, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1601832223}
-    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowBannerAd
+      propertyPath: m_Name
+      value: Title
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283843817909386, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1601832223}
-    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowInterstitialAd
+      propertyPath: m_Text
+      value: AdMob
       objectReference: {fileID: 0}
     - target: {fileID: 2741283843965161440, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
@@ -806,15 +797,25 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowRewardedVideoAd
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283843817909384, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_Name
-      value: Title
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1601832223}
+    - target: {fileID: 2741283844636409582, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowInterstitialAd
       objectReference: {fileID: 0}
-    - target: {fileID: 2741283843817909386, guid: 594efa3f4b78b094f94e2687385a526a,
+    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
         type: 3}
-      propertyPath: m_Text
-      value: AdMob
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1601832223}
+    - target: {fileID: 2741283844644608702, guid: 594efa3f4b78b094f94e2687385a526a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowBannerAd
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594efa3f4b78b094f94e2687385a526a, type: 3}
@@ -939,7 +940,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1799048131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalAxis: Horizontal
@@ -958,7 +959,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1799048131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}

@@ -47,8 +47,11 @@ namespace GoogleMobileAds.Common
 
         public event EventHandler<EventArgs> OnAdCompleted;
 
-        public event EventHandler<CustomNativeEventArgs> OnCustomNativeTemplateAdLoaded;
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
+        public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdLoaded;
+
+        public event EventHandler<CustomNativeClientEventArgs> OnCustomNativeTemplateAdClicked;
 #pragma warning restore 67
 
         public string UserId
@@ -69,9 +72,28 @@ namespace GoogleMobileAds.Common
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
+
+        public void Initialize(Action<IInitializationStatusClient> initCompleteAction)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            initCompleteAction(null);
+        }
+
         public void SetApplicationMuted(bool muted)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public void SetRequestConfiguration(RequestConfiguration requestConfiguration)
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+         public RequestConfiguration GetRequestConfiguration()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return null;
+
         }
 
         public void SetApplicationVolume(float volume)
@@ -82,6 +104,18 @@ namespace GoogleMobileAds.Common
         public void SetiOSAppPauseOnBackground(bool pause)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+        }
+
+        public float GetDeviceScale()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return 0;
+        }
+
+        public int GetDeviceSafeWidth()
+        {
+            Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
+            return 0;
         }
 
         public void CreateBannerView(string adUnitId, AdSize adSize, AdPosition position)
@@ -182,7 +216,7 @@ namespace GoogleMobileAds.Common
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }
 
-        public void CreateAdLoader(AdLoader.Builder builder)
+        public void CreateAdLoader(AdLoaderClientArgs args)
         {
             Debug.Log("Dummy " + MethodBase.GetCurrentMethod().Name);
         }

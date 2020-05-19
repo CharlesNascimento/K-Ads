@@ -13,8 +13,8 @@
 // limitations under the License.
 
 using System;
-using System.Reflection;
 
+using GoogleMobileAds;
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -25,14 +25,7 @@ namespace GoogleMobileAds.Api
 
         public RewardedAd(string adUnitId)
         {
-            // GoogleMobileAdsClientFactory is not included in the compiled DLL due to
-            // needing platform directives, so reflection is needed to call this method.
-            Type googleMobileAdsClientFactory = Type.GetType(
-                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
-            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
-                "BuildRewardedAdClient",
-                BindingFlags.Static | BindingFlags.Public);
-            this.client = (IRewardedAdClient)method.Invoke(null, null);
+            this.client = GoogleMobileAdsClientFactory.BuildRewardedAdClient();
             client.CreateRewardedAd(adUnitId);
 
             this.client.OnAdLoaded += (sender, args) =>
@@ -82,6 +75,15 @@ namespace GoogleMobileAds.Api
                     this.OnUserEarnedReward(this, args);
                 }
             };
+
+            this.client.OnPaidEvent += (sender, args) =>
+            {
+                if (this.OnPaidEvent != null)
+                {
+                    this.OnPaidEvent(this, args);
+                }
+            };
+
         }
 
         // These are the ad callback events that can be hooked into.
@@ -96,6 +98,9 @@ namespace GoogleMobileAds.Api
         public event EventHandler<EventArgs> OnAdClosed;
 
         public event EventHandler<Reward> OnUserEarnedReward;
+
+        // Called when the ad is estimated to have earned money.
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
 
         // Loads a new rewarded ad.
         public void LoadAd(AdRequest request)
@@ -119,6 +124,15 @@ namespace GoogleMobileAds.Api
         public void SetServerSideVerificationOptions(ServerSideVerificationOptions serverSideVerificationOptions)
         {
             client.SetServerSideVerificationOptions(serverSideVerificationOptions);
+        }
+
+        // Returns the reward item for the loaded rewarded ad.
+        public Reward GetRewardItem()
+        {
+            if (client.IsLoaded()) {
+              return client.GetRewardItem();
+            }
+            return null;
         }
 
         // Returns the mediation adapter class name.

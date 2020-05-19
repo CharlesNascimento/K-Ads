@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_ANDROID
-
 using System;
 using UnityEngine;
 
@@ -48,6 +46,8 @@ namespace GoogleMobileAds.Android
 
         public event EventHandler<EventArgs> OnAdClosed;
 
+        public event EventHandler<AdValueEventArgs> OnPaidEvent;
+
         public void CreateRewardedAd(string adUnitId)
         {
             androidRewardedAd.Call("create", adUnitId);
@@ -76,6 +76,22 @@ namespace GoogleMobileAds.Android
         public void DestroyRewardBasedVideoAd()
         {
             androidRewardedAd.Call("destroy");
+        }
+
+        // Returns the reward item for the loaded rewarded ad.
+        public Reward GetRewardItem()
+        {
+          AndroidJavaObject rewardItem = this.androidRewardedAd.Call<AndroidJavaObject>("getRewardItem");
+          if (rewardItem == null) {
+            return null;
+          }
+          string type = rewardItem.Call<string>("getType");
+          int amount = rewardItem.Call<int>("getAmount");
+          return new Reward()
+          {
+              Type = type,
+              Amount = (double) amount
+          };
         }
 
         // Returns the mediation adapter class name.
@@ -150,8 +166,27 @@ namespace GoogleMobileAds.Android
             }
         }
 
+        public void onPaidEvent(int precision, long valueInMicros, string currencyCode)
+        {
+            if (this.OnPaidEvent != null)
+            {
+              AdValue adValue = new AdValue()
+              {
+                  Precision = (AdValue.PrecisionType)precision,
+                  Value = valueInMicros,
+                  CurrencyCode = currencyCode
+              };
+              AdValueEventArgs args = new AdValueEventArgs() {
+                  AdValue = adValue
+              };
+
+              this.OnPaidEvent(this, args);
+            }
+        }
+
+
         #endregion
     }
 }
 
-#endif
+

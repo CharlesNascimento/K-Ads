@@ -1,11 +1,10 @@
 #if UNITY_IPHONE || UNITY_IOS
-
+using System;
 using System.IO;
 
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
-using UnityEngine;
 
 using GoogleMobileAds.Editor;
 
@@ -18,6 +17,11 @@ public static class PListProcessor
         PlistDocument plist = new PlistDocument();
         plist.ReadFromFile(plistPath);
 
+        if (!GoogleMobileAdsSettings.Instance.IsAdManagerEnabled && !GoogleMobileAdsSettings.Instance.IsAdMobEnabled)
+        {
+            NotifyBuildFailure("Neither Ad Manager nor AdMob is enabled yet.");
+        }
+
         if (GoogleMobileAdsSettings.Instance.IsAdManagerEnabled)
         {
             plist.root.SetBoolean("GADIsAdManagerApp", true);
@@ -28,7 +32,8 @@ public static class PListProcessor
             string appId = GoogleMobileAdsSettings.Instance.AdMobIOSAppId;
             if (appId.Length == 0)
             {
-                Debug.LogError("iOS AdMob app ID is empty. Please enter a valid app ID to run ads properly.");
+                NotifyBuildFailure(
+                    "iOS AdMob app ID is empty. Please enter a valid app ID to run ads properly.");
             }
             else
             {
@@ -42,6 +47,23 @@ public static class PListProcessor
         }
 
         File.WriteAllText(plistPath, plist.WriteToString());
+    }
+
+    private static void NotifyBuildFailure(string message)
+    {
+        string prefix = "[GoogleMobileAds] ";
+
+        bool openSettings = EditorUtility.DisplayDialog(
+            "Google Mobile Ads", "Error: " + message, "Open Settings", "Close");
+        if (openSettings)
+        {
+            GoogleMobileAdsSettingsEditor.OpenInspector();
+        }
+#if UNITY_2017_1_OR_NEWER
+        throw new BuildPlayerWindow.BuildMethodException(prefix + message);
+#else
+        throw new OperationCanceledException(prefix + message);
+#endif
     }
 }
 
